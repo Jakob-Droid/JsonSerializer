@@ -23,7 +23,7 @@ namespace JsonSerializer
                 builder.Append(HelperBuilder(obj, prop));
                 if (lastElement != prop)
                 {
-                    builder.Append(' ');
+                    builder.Append(", ");
                 }
             }
 
@@ -44,12 +44,23 @@ namespace JsonSerializer
             }
             else if(typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) && prop.PropertyType != typeof(string))
             {
-                StringBuilder builder = new StringBuilder("[");
+                StringBuilder builder = new StringBuilder();
+
+                builder.Append('"').Append(prop.Name).Append("\": ");
+
+                builder.Append('[');
                 if ((IEnumerable)prop.GetValue(obj) != null)
                 {
+                    IEnumerable items = (IEnumerable) prop.GetValue(obj);
+
+                    IEnumerable lastItem = items.Cast<dynamic>().Last();
                     foreach (var item in (IEnumerable)prop.GetValue(obj))
                     {
                         builder.Append($"\"{item}\"");
+                        if (item != lastItem)
+                        {
+                            builder.Append(", ");
+                        }
                     }
                 }
 
