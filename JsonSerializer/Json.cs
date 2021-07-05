@@ -52,7 +52,7 @@ namespace JsonSerializer
                 if ((IEnumerable)prop.GetValue(obj) != null)
                 {
                     IEnumerable items = (IEnumerable) prop.GetValue(obj);
-
+                    //HACK -- NO CLUE HOW THIS WORKS?? :D
                     IEnumerable lastItem = items.Cast<dynamic>().Last();
                     foreach (var item in (IEnumerable)prop.GetValue(obj))
                     {
